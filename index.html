@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap">
     <style>
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
         body, html {
             height: 100%;
             margin: 0;
@@ -64,8 +64,8 @@
             position: relative;
         }
         #score-board-container {
-            width: 30%;
-            height: 30%;
+            width: 35%;
+            height: 35%;
             margin-left: -10px;
             margin-top: -50px;
             /* margin: auto; */
@@ -118,7 +118,7 @@
         #difficulty-level-normal {
             width: 15%;
             height: 20%;
-            margin-left: 180px;
+            margin-left: 160px;
             margin-top: -30px;
             /* margin: auto; */
             /* padding: 2rem; */
@@ -134,7 +134,7 @@
         #difficulty-level-hard {
             width: 15%;
             height: 20%;
-            margin-left: 260px;
+            margin-left: 220px;
             margin-top: -30px;
             /* margin: auto; */
             /* padding: 2rem; */
@@ -199,7 +199,7 @@
         .slot-1-item {
             border: 4px solid rgba(0, 0, 0, 0.733);
             border-radius: 20px;
-            width: 200px;
+            width: 150px;
             margin:auto;
             height: 50%;
             margin-top: auto;
@@ -212,7 +212,7 @@
         .slot-2-item {
             border: 4px solid rgba(0, 0, 0, 0.733);
             border-radius: 20px;
-            width: 200px;
+            width: 150px;
             margin:auto;
             height: 50%;
             margin-top: auto;
@@ -224,7 +224,7 @@
         .slot-3-item {
             border: 4px solid rgba(0, 0, 0, 0.733);
             border-radius: 20px;
-            width: 200px;
+            width: 150px;
             margin:auto;
             height: 50%;
             margin-top: auto;
@@ -243,15 +243,16 @@
         }
         .bet-buttons-frame {
             width: 60%;
-            height: 100px;
-            margin-top: -1rem;
-            margin-right: -80px;
+            height: 120px;
+            margin-top: -2rem;
+            margin-left: -160px;
             background-image: url('bet.png');
-            background-size: 100%;
+            background-size: 80%;
             background-position: 90%;
             background-repeat: no-repeat;
             display: flex;
             justify-content: space-between;
+            position: absolute;
             /* border: 8px solid rgba(9, 97, 211, 0.733); */
         }
 
@@ -387,7 +388,7 @@
 <body>
     <div id="slot-machine-container">
         <div id="gif-container" style="display: none;">
-            <img id="gif-image" src="play_method.gif" style="width: 100%; height: 100%;">
+            <img id="gif-image" src="play_method.gif" style="width: 100%; height: 80%;">
         </div>
         <div class="slot-play-frame"></div>
         <button id="enter-button"></button>
