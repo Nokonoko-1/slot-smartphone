@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Bound Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-image: url('background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            
+        }
+        #gif-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+        .centered-flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border: 10px solid rgba(0, 190, 204, 0.733); */
+        }
+        .flex-column {
+            flex-direction: column;
+        }
+        /* #enter-button {
+            position: absolute;
+            width: 1900px;
+            height: 1000px;
+            margin-top: -50px;
+            margin-left: -850px;
+            background-image: url('enter.gif');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            border-radius: 20px;
+            justify-content: center;
+            z-index: 9999;
+        } */
+        #slot-machine-container {
+            width: 100%;
+            height: 100%;
+            max-width: 900px;
+            max-height: 900px;
+            left: 30%;
+            margin: auto;
+            padding: 2rem;
+            background-image: url('slot-back.jpg');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+        }
+        #score-board-container {
+            width: 30%;
+            height: 30%;
+            margin-left: -100px;
+            margin-top: -50px;
+            /* margin: auto; */
+            /* padding: 2rem; */
+            background-image: url('score-board.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            border-radius: 20px;
+
+            position: absolute;
+        }
+        #settins-button {
+            width: 3vw; /* ビューポートの幅の10% */
+            height: 1.9vh; /* ビューポートの高さの10% */
+            position: fixed;
+            top: 10%; /* 画面の上からの距離 */
+            left: 30%; /* 画面の左からの距離 */
+            margin-left: -30%;
+            margin-top: -15%;
+            margin-right: 80%;
+      
+            /* margin: auto; */
+            /* padding: 2rem; */
+            background-image: url('setting.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            /* border: 3px solid #a104af; */
+            border-radius: 100px;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 600px) {
+        #settins-button {
+            width: 10vw;
+            height: 15vh;
+            /* 他のスタイルも適宜調整 */
+        }
+        #difficulty-level-easy {
+            width: 15%;
+            height: 20%;
+            margin-left: 100px;
+            margin-top: -30px;
+            /* margin: auto; */
+            /* padding: 2rem; */
+            background-image: url('easy.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            cursor: pointer;
+            border-radius: 20px;
+            text-align: center;
+            position: absolute;
+        }
+        #difficulty-level-normal {
+            width: 15%;
+            height: 20%;
+            margin-left: 180px;
+            margin-top: -30px;
+            /* margin: auto; */
+            /* padding: 2rem; */
+            background-image: url('normal.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            cursor: pointer;
+            border-radius: 20px;
+            text-align: center;
+            position: absolute;
+        }
+        #difficulty-level-hard {
+            width: 15%;
+            height: 20%;
+            margin-left: 260px;
+            margin-top: -30px;
+            /* margin: auto; */
+            /* padding: 2rem; */
+            background-image: url('hard.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            cursor: pointer;
+            border-radius: 20px;
+            text-align: center;
+            position: absolute;
+        }
+        @keyframes blinking {
+            0%   { background-color: #ff7ce9; } /* 赤 */
+            25%  { background-color: #8c00ff; } /* 黄色 */
+            50%  { background-color: #ff00f2; } /* 緑 */
+            75%  { background-color: #f700ff; } /* 青 */
+            100% { background-color: #ff00ff; } /* マゼンタ */
+        }
+        .slot-play-frame {
+            width: 100%;
+            height: 200px;
+            margin-top: 30%;
+            margin-left: -5%;
+            background-image: url('slot-play-frame.png');
+            background-size:100%; /*背景画像のサイズ指定*/
+            background-repeat: no-repeat;
+            /* border: 3px solid #a104af; */
+            border-radius: 50px;
+            position: absolute;
+        }
+        .slot-play-frame.blinking {
+            animation: blinking 1s linear infinite;
+        }
+        .slot-1 {
+            flex: 1;
+            /* border: 8px solid rgba(204, 201, 0, 0.733); */
+            border-radius: 20px;
+            width: 40;
+            height: 300px;
+            margin-top: 160px;
+            background-image: url('sakura-battle.png');
+        }
+        .slot-2 {
+            flex: 1;
+            /* border: 8px solid rgba(204, 201, 0, 0.733); */
+            border-radius: 20px;
+            width: 40;
+            height: 300px;
+            margin-top: 160px;
+            background-image: url('sakura-battle.png');
+        }
+        .slot-3 {
+            flex: 1;
+            /* border: 8px solid rgba(204, 201, 0, 0.733); */
+            /* border-radius: 20px; */
+            width: 40;
+            height: 300px;
+            margin-top: 160px;
+            background-image: url('sakura-battle.png');
+        }
+        .slot-1-item {
+            border: 4px solid rgba(0, 0, 0, 0.733);
+            border-radius: 20px;
+            width: 200px;
+            margin:auto;
+            height: 50%;
+            margin-top: auto;
+            position:relative;
+            background-image: url('mini-sakura.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .slot-2-item {
+            border: 4px solid rgba(0, 0, 0, 0.733);
+            border-radius: 20px;
+            width: 200px;
+            margin:auto;
+            height: 50%;
+            margin-top: auto;
+            background-image: url('mini-sakura.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position:relative;
+        }
+        .slot-3-item {
+            border: 4px solid rgba(0, 0, 0, 0.733);
+            border-radius: 20px;
+            width: 200px;
+            margin:auto;
+            height: 50%;
+            margin-top: auto;
+            background-image: url('mini-sakura.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position:relative;
+        }
+        .slot-machine-buttons {
+            width: 100%;
+            height: 100px;
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-between;
+            /* border: 8px solid rgba(211, 9, 9, 0.733); */
+        }
+        .bet-buttons-frame {
+            width: 60%;
+            height: 100px;
+            margin-top: -1rem;
+            margin-right: -80px;
+            background-image: url('bet.png');
+            background-size: 100%;
+            background-position: 90%;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: space-between;
+            /* border: 8px solid rgba(9, 97, 211, 0.733); */
+        }
+
+        .button-1-frame {
+            background-color: #444;
+            border: none;
+            padding: 10px;
+            margin: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+            /* border: 8px solid rgba(133, 8, 8, 0.733); */
+        }
+        .button-1 {
+            background-image: url('slot-button.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            border: none;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+            
+        }
+        .button-2-frame {
+            background-color: #444;
+            border: none;
+            padding: 10px;
+            margin: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+            /* border: 8px solid rgba(133, 8, 8, 0.733); */
+        }
+        .button-2 {
+            background-image: url('slot-button.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: none;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+        }
+        .button-3-frame {
+            background-color: #444;
+            border: none;
+            padding: 10px;
+            margin: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+            /* border: 8px solid rgba(133, 8, 8, 0.733); */
+        }
+        .button-3 {
+            background-image: url('slot-button.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: none;
+            padding: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
+            justify-content: center
+        }
+        .button-1:active, .button-2:active, .button-3:active {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        }
+        .start-button {
+            /* background-color: #444; */
+            border: none;
+            padding: 10px;
+            margin: auto;
+            margin-left: 30%;
+            margin-top: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            background-image: url('start-button.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            width: 200px;
+            height: 200px;
+            font-size: 24px;
+        }
+        .button-1:active, .button-2:active, .button-3:active {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        }
+        #difficulty-level-easy:active, #difficulty-level-normal:active, #difficulty-level-hard:active {
+            box-shadow: 0 0 50px rgba(255, 255, 255, 1);
+        }
+        .start-button:active {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        }
+        #points {
+            margin-top: 150px;
+            color: rgb(230, 86, 175);
+            font-size: 30px;
+            margin-top: 20%;
+            margin-left: 35%;
+            font-family: 'Press Start 2P', cursive; /* ゲーム風のフォントを設定 */
+        }
+        #score {
+            margin-top: 65px;
+            font-size: 20px;
+            font-family: 'Press Start 2P', cursive; /* ゲーム風のフォントを設定 */
+        }
+    </style>
+</head>
+<button id="settins-button"></button>
+<body>
+    <div id="slot-machine-container">
+        <div id="gif-container" style="display: none;">
+            <img id="gif-image" src="play_method.gif" style="width: 100%; height: 100%;">
+        </div>
+        <div class="slot-play-frame"></div>
+        <button id="enter-button"></button>
+        <div id="score-board-container">
+            <p id="score">0</p> <!-- スコア表示用の要素を追加 -->
+        </div>
+        <button id="difficulty-level-easy"></button>
+        <button id="difficulty-level-normal"></button>
+        <button id="difficulty-level-hard"></button>
+        <div class="centered-flex">
+            <div class="slot-1">
+                <div class="slot-1-item"></div>
+                <div class="button-1-frame">
+                    <button class="button-1"></button>
+                </div>
+            </div>
+            <div class="slot-2">
+                <div class="slot-2-item"></div>
+                <div class="button-2-frame">
+                    <button class="button-2"></button>
+                </div>
+            </div>
+            <div class="slot-3">
+                <div class="slot-3-item"></div>
+                <div class="button-3-frame">
+                    <button class="button-3"></button>
+                </div>
+            </div>
+        </div>
+        <div class="slot-machine-buttons">
+            <button class="start-button" "></button>
+            <div class="bet-buttons-frame">
+                <p id="points">300</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var images = ['mini-lolleta.png', 'mini-lolleta-wafu.png', 'mini-myla.png', 'mini-sakura.png', 'mini-ailany.png', 'sexy-rio.png', 'rio.png', 'rio-mama.png'];
+        var index1 = 0, index2 = 0, index3 = 0; // 各スロット用のインデックス
+        var interval1, interval2, interval3;
+        var points = 300; // ポイントを管理する変数を追加
+        var speed = 200; // 初期スピードを設定
+        var score = 0; // スコアを管理する変数を追加
+        var bonus = 0; // ボーナスを管理する変数を追加
+        var lastResult = false; // 前回の結果を管理する変数を追加
+        var stopCount = 0; // スロットが止まった回数を管理する変数を追加
+        var scoreMultiplier = 1; // スコアの乗数を管理する変数を追加
+        var autoPlayCount = 0; // 自動再生のカウントを追加
+        var isStarted = false; // スタートボタンが押されたかどうかを追跡する新しい変数
+
+        document.querySelector('#difficulty-level-easy').addEventListener('click', function() {
+            speed = 300; // ゆっくりに設定
+            scoreMultiplier = 1; // スコアの乗数を1に設定
+            document.getElementById('sound-5').play();
+        });
+
+        document.querySelector('#difficulty-level-normal').addEventListener('click', function() {
+            speed = 180; // 普通に設定
+            scoreMultiplier = 2; // スコアの乗数を2に設定
+            document.getElementById('sound-6').play();
+        });
+
+        document.querySelector('#difficulty-level-hard').addEventListener('click', function() {
+            speed = 100; // 速く設定
+            scoreMultiplier = 3; // スコアの乗数を3に設定
+            document.getElementById('sound-7').play();
+        });
+        document.querySelector('#enter-button').addEventListener('click', function() {
+            this.style.display = 'none';
+            var sounds = ['sound-4', 'sound-16', 'sound-17', 'sound-18', 'sound-19', 'sound-20'];
+            var randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+            document.getElementById(randomSound).play();
+            var bgms = ['bgm-1', 'bgm-2', 'bgm-3', 'bgm-4'];
+            var randomBgm = bgms[Math.floor(Math.random() * bgms.length)];
+            document.getElementById(randomBgm).play();
+        });
+
+        
+        document.querySelector('.start-button').addEventListener('click', function() {
+            document.getElementById('slot-machine-container').classList.add('blinking');
+            isStarted = true;
+            stopCount = 0; 
+            if (points <= 0) {
+                document.getElementById('sound-15').play(); // 「挿入金が不足しています」.mp3を再生
+                return; // ポイントが0以下の場合、何もしない
+            }
+            points -= 10; // ポイントを10減らす
+            document.getElementById('points').textContent = points; // ポイントを表示更新
+            clearInterval(interval1);
+            clearInterval(interval2);
+            clearInterval(interval3);
+            document.getElementById('sound-0').play();
+            index1 = index2 = index3 = 0; // スタートボタンを押すたびにインデックスをリセット
+
+            document.querySelector('.button-1').disabled = false;
+            document.querySelector('.button-2').disabled = false;
+            document.querySelector('.button-3').disabled = false;
+            interval1 = setInterval(function() {
+                document.querySelector('.slot-1-item').style.backgroundImage = "url('" + images[index1] + "')";
+                index1 = (index1 + 1) % images.length;
+            }, speed);
+
+            interval2 = setInterval(function() {
+                document.querySelector('.slot-2-item').style.backgroundImage = "url('" + images[index2] + "')";
+                index2 = (index2 + 1) % images.length;
+            }, speed);
+
+            interval3 = setInterval(function() {
+                document.querySelector('.slot-3-item').style.backgroundImage = "url('" + images[index3] + "')";
+                index3 = (index3 + 1) % images.length;
+            }, speed);
+        });
+        function checkResult() {
+            if (!isStarted) return; 
+            stopCount++; 
+            if (stopCount < 3) return; 
+            if ((index1 == index2 && index2 != index3) || (index1 != index2 && index2 == index3) || (index1 == index3 && index2 != index3)) {
+                setTimeout(function() {
+                var sounds = ['sound-12', 'sound-13', 'sound-14'];
+                var randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+                document.getElementById(randomSound).play();
+            }, 1000);
+            score += 10 * scoreMultiplier; // 2つの画像が一致した場合にスコアを加算
+            } else if (index1 == index2 && index2 == index3) {
+                setTimeout(function() {
+                    var sounds = ['sound-8', 'sound-9', 'sound-10', 'sound-11'];
+                    var randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+                    document.getElementById(randomSound).play();
+                    document.querySelector('.slot-play-frame').classList.add('blinking');
+                    setTimeout(function() {
+                        document.querySelector('.slot-play-frame').classList.remove('blinking');
+                    }, 1000);
+                }, 1000);
+                score += 100 * scoreMultiplier; 
+                if (lastResult) {
+                    bonus += 50 * scoreMultiplier; 
+                    score += bonus; 
+                }
+                lastResult = true; 
+                isStarted = false;
+            } else {
+                lastResult = false; 
+                bonus = 0; 
+            }
+            document.getElementById('score').textContent = score; 
+            stopCount = 0; 
+        }
+        document.querySelector('.button-1').addEventListener('click', function() {
+            if (!isStarted || this.disabled) return;
+            this.disabled = true; // ボタンを無効化
+            clearInterval(interval1);
+            document.getElementById('sound-1').play();
+            checkResult(); // ボタン1をクリックしたときに結果をチェック
+        }); 
+
+        document.querySelector('.button-2').addEventListener('click', function() {
+            if (!isStarted || this.disabled) return;
+            this.disabled = true; // ボタンを無効化
+            clearInterval(interval2);
+            document.getElementById('sound-2').play();
+            checkResult(); // ボタン2をクリックしたときに結果をチェック
+        });
+
+        document.querySelector('.button-3').addEventListener('click', function() {
+            if (!isStarted || this.disabled) return;
+            this.disabled = true; // ボタンを無効化
+            clearInterval(interval3);
+            document.getElementById('sound-3').play();
+            checkResult(); // ボタン3をクリックしたときに結果をチェック
+        });
+        document.querySelector('#settins-button').addEventListener('click', function() {
+            document.getElementById('sound-21').play();
+            document.getElementById('gif-container').style.display = 'block';
+        });
+        document.querySelector('#gif-image').addEventListener('click', function() {
+            document.getElementById('sound-22').play();
+            document.getElementById('gif-container').style.display = 'none';
+        });
+
+    </script>
+    <audio id="sound-0" src="start.mp3"></audio>
+    <audio id="sound-1" src="みんなでつくる.wav"></audio>
+    <audio id="sound-2" src="みんなのための.wav"></audio>
+    <audio id="sound-3" src="メタバース.wav"></audio>
+    <audio id="sound-4" src="「いらっしゃいです！」.mp3"></audio>
+    <audio id="sound-5" src="easy-mode.wav"></audio>
+    <audio id="sound-6" src="normal-mode.wav"></audio>
+    <audio id="sound-7" src="hard-mode.wav"></audio>
+    <audio id="sound-8" src="「すごいすごい」.mp3"></audio>
+    <audio id="sound-9" src="「マーベラス」.mp3"></audio>
+    <audio id="sound-10" src="「エクセレント」.mp3"></audio>
+    <audio id="sound-11" src="「大当たり～」.mp3"></audio>
+    <audio id="sound-12" src="「惜っしーい」.mp3"></audio>
+    <audio id="sound-13" src="「あとちょっとだったね」.mp3"></audio>
+    <audio id="sound-14" src="「もう一息です」.mp3"></audio>
+    <audio id="sound-15" src="「挿入金が不足しています」.mp3"></audio>
+    <audio id="sound-16" src="「らっしゃい！」.mp3"></audio>
+    <audio id="sound-17" src="「いらっしゃいませ！」.mp3"></audio>
+    <audio id="sound-18" src="「ようこそ」.mp3"></audio>
+    <audio id="sound-19" src="「準備はいいですか？」.mp3"></audio>
+    <audio id="sound-20" src="「準備はいいかな？」.mp3"></audio>
+    <audio id="sound-21" src="決定ボタンを押す29.mp3"></audio>
+    <audio id="sound-22" src="決定ボタンを押す42 (1).mp3"></audio>
+    <audio id="bgm-1" src="night-pop-1.wav" loop></audio>
+    <audio id="bgm-2" src="night-pop-2.wav" loop></audio>
+    <audio id="bgm-3" src="night-pop-3.wav" loop></audio>
+    <audio id="bgm-4" src="hip-hop-1.wav" loop></audio>
+</body>
+</html>
